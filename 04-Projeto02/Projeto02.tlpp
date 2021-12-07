@@ -221,6 +221,8 @@ User Function Projeto02()
   oButtonAlterar      := TButton():New(250, 80, "Alterar",    oDlg1,{|| AlterarSZ1()}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. ) 
   oButtonConsultar    := TButton():New(250, 140, "Consultar", oDlg1,{|| BuscarSZ1()}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. ) 
   oButtonExcluir      := TButton():New(250, 200, "Excluir",   oDlg1,{|| ExcluirSZ1()}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. ) 
+  oButtonSair         := TButton():New(250, 300, "Sair",   oDlg1,{|| oDlg1:End()}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. ) 
+  oButtonLimparTela   := TButton():New(250, 360, "Limpar tela",   oDlg1,{|| Limpartela()}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. ) 
 
   oBmpIncluir := TBitmap():New(220,30,142,142,,"C:\TOTVS12133\Protheus\Protheus\my projects\ADVPLII\BMPS DE BOTÓES\incluirprotheuzeiro.bmp",.T.,oDlg1,{|| IncluirSZ1()},,.F.,.F.,,,.F.,,.T.,,.F.)
   oBmpIncluir:lAutoSize := .T.
@@ -233,6 +235,12 @@ User Function Projeto02()
 
   oBmpExcluir := TBitmap():New(220,210,142,142,,"C:\TOTVS12133\Protheus\Protheus\my projects\ADVPLII\BMPS DE BOTÓES\excluirprotheuzeiro.bmp",.T.,oDlg1,{|| ExcluirSZ1()},,.F.,.F.,,,.F.,,.T.,,.F.)
   oBmpExcluir:lAutoSize := .T.
+
+  oBmpSair := TBitmap():New(220,310,142,142,,"C:\TOTVS12133\Protheus\Protheus\my projects\ADVPLII\BMPS DE BOTÓES\sair.bmp",.T.,oDlg1,{|| oDlg1:End()},,.F.,.F.,,,.F.,,.T.,,.F.)
+  oBmpSair:lAutoSize := .T.
+
+  oBmpLimparTela := TBitmap():New(220,370,142,142,,"C:\TOTVS12133\Protheus\Protheus\my projects\ADVPLII\BMPS DE BOTÓES\limpartela.bmp",.T.,oDlg1,{|| Limpartela()},,.F.,.F.,,,.F.,,.T.,,.F.)
+  oBmpLimparTela:lAutoSize := .T.
 
   // Dialog Final
   oDlg1:Activate(,,,.T.)
@@ -248,35 +256,41 @@ DbSetOrder(1)
 if DbSeek(XFILIAL('SZ1')+cGetCodigo)
   Alert('Registro já existe!')
 else
-  RecLock('SZ1', .T.)
 
-    SZ1 -> Z1_FILIAL := XFILIAL('SZ1')
-    SZ1 -> Z1_COD := cGetCodigo
-    SZ1 -> Z1_NOME := cGetNome
-    SZ1 -> Z1_NOMERED := cGetNomeReduz
-    SZ1 -> Z1_DATNASC := dGetDatNasc
-    SZ1 -> Z1_DDDCEL :=  STRTRAN(STRTRAN(cGetDDDCel,'(',''),')','')
-    SZ1 -> Z1_CELULAR := STRTRAN(cGetCEL,'-','')
-    SZ1 -> Z1_SEXO := CValToChar(nSexo)  // 1 = Masculino / 2 = Feminino
-    SZ1 -> Z1_CPF := STRTRAN(STRTRAN(cGetCPF,'.',''),'-','')
-    SZ1 -> Z1_ENDEREC := cGetEndereco
-    SZ1 -> Z1_BAIRRO := cGetBairro
-    SZ1 -> Z1_TIPOIMO := cImovel
-    SZ1 -> Z1_CEP := STRTRAN(cGetCEP,'-','')
-    SZ1 -> Z1_ESTADO := cEstados
-    SZ1 -> Z1_CIDADE := cGetCidade
-    SZ1 -> Z1_ESTADOC := cEstCivil
-    SZ1 -> Z1_TEMPET := CValToChar(nPet)
-    SZ1 -> Z1_LADVPL := IIF(lCheckADVPL = .T.,"1","2") // 1 = sim, 2 = não
-    SZ1 -> Z1_LSQL := IIF(lCheckSQL,"1","2")
-    SZ1 -> Z1_LCSHARP := IIF(lCheckCSHARP,"1","2")
-    SZ1 -> Z1_PYTHON := IIF(lCheckPython,"1","2")
-    SZ1 -> Z1_OBS := cObservacao
+  if (!Empty(cGetCodigo) .AND. !Empty(cGetNome) .AND. !Empty(cGetNomeReduz) .AND. !Empty(dGetDatNasc) .AND. !Empty(STRTRAN(STRTRAN(cGetDDDCel,'(',''),')','')) .AND. !Empty(STRTRAN(cGetCEL,'-','')) .AND. !Empty(STRTRAN(STRTRAN(cGetCPF,'.',''),'-','')))
+    //(cGetCodigo, cGetNome, cGetNomeReduz, dGetDatNasc, cGetDDDCel, cGetCEL, nSexo, cGetCPF, cGetEndereco, cGetBairro, cImovel, cGetCEP, cEstados, cGetCidade, cEstCivil, nPet, lCheckADVPL, lCheckSQL, lCheckCSHARP, lCheckPython, cObservacao)
+    RecLock('SZ1', .T.)
 
-  MsUnlock()
+      SZ1 -> Z1_FILIAL := XFILIAL('SZ1')
+      SZ1 -> Z1_COD := cGetCodigo
+      SZ1 -> Z1_NOME := cGetNome
+      SZ1 -> Z1_NOMERED := cGetNomeReduz
+      SZ1 -> Z1_DATNASC := dGetDatNasc
+      SZ1 -> Z1_DDDCEL :=  STRTRAN(STRTRAN(cGetDDDCel,'(',''),')','')
+      SZ1 -> Z1_CELULAR := STRTRAN(cGetCEL,'-','')
+      SZ1 -> Z1_SEXO := CValToChar(nSexo)  // 1 = Masculino / 2 = Feminino
+      SZ1 -> Z1_CPF := STRTRAN(STRTRAN(cGetCPF,'.',''),'-','')
+      SZ1 -> Z1_ENDEREC := cGetEndereco
+      SZ1 -> Z1_BAIRRO := cGetBairro
+      SZ1 -> Z1_TIPOIMO := cImovel
+      SZ1 -> Z1_CEP := STRTRAN(cGetCEP,'-','')
+      SZ1 -> Z1_ESTADO := cEstados
+      SZ1 -> Z1_CIDADE := cGetCidade
+      SZ1 -> Z1_ESTADOC := cEstCivil
+      SZ1 -> Z1_TEMPET := CValToChar(nPet)
+      SZ1 -> Z1_LADVPL := IIF(lCheckADVPL = .T.,"1","2") // 1 = sim, 2 = não
+      SZ1 -> Z1_LSQL := IIF(lCheckSQL,"1","2")
+      SZ1 -> Z1_LCSHARP := IIF(lCheckCSHARP,"1","2")
+      SZ1 -> Z1_PYTHON := IIF(lCheckPython,"1","2")
+      SZ1 -> Z1_OBS := cObservacao
 
-  MsgInfo('Cliente incluido com sucesso', 'Sucesso')
-  Limpartela()
+    MsUnlock()
+
+    MsgInfo('Cliente incluido com sucesso', 'Sucesso')
+    Limpartela()
+  else
+    Alert('Preencha os campos obrigatórios!')
+  endif
 endif
 
 DbCloseArea()
@@ -322,33 +336,37 @@ Static Function AlterarSZ1()
   DbSelectArea('SZ1')
   DbSetOrder(1)
   
-  if DbSeek(XFILIAL('SZ1')+cGetCodigo)
-    RecLock('SZ1', .F.)
-      SZ1 -> Z1_NOME := cGetNome
-      SZ1 -> Z1_NOMERED := cGetNomeReduz
-      SZ1 -> Z1_DATNASC := dGetDatNasc
-      SZ1 -> Z1_DDDCEL :=  STRTRAN(STRTRAN(cGetDDDCel,'(',''),')','')
-      SZ1 -> Z1_CELULAR := STRTRAN(cGetCEL,'-','')
-      SZ1 -> Z1_SEXO := CValToChar(nSexo)  // 1 = Masculino / 2 = Feminino
-      SZ1 -> Z1_CPF := STRTRAN(STRTRAN(cGetCPF,'.',''),'-','')
-      SZ1 -> Z1_ENDEREC := cGetEndereco
-      SZ1 -> Z1_BAIRRO := cGetBairro
-      SZ1 -> Z1_TIPOIMO := cImovel
-      SZ1 -> Z1_CEP := STRTRAN(cGetCEP,'-','')
-      SZ1 -> Z1_ESTADO := cEstados
-      SZ1 -> Z1_CIDADE := cGetCidade
-      SZ1 -> Z1_ESTADOC := cEstCivil
-      SZ1 -> Z1_TEMPET := CValToChar(nPet)
-      SZ1 -> Z1_LADVPL := IIF(lCheckADVPL = .T.,"1","2") // 1 = sim, 2 = não
-      SZ1 -> Z1_LSQL := IIF(lCheckSQL,"1","2")
-      SZ1 -> Z1_LCSHARP := IIF(lCheckCSHARP,"1","2")
-      SZ1 -> Z1_PYTHON := IIF(lCheckPython,"1","2")
-      SZ1 -> Z1_OBS := cObservacao
-    MsUnlock()
-
-    MsgInfo('Cliente alterado com sucesso', 'Sucesso')
+  if (Empty(cGetCodigo) .OR. Empty(cGetNome) .OR. Empty(cGetNomeReduz) .OR. Empty(dGetDatNasc) .OR. Empty(STRTRAN(STRTRAN(cGetDDDCel,'(',''),')','')) .OR. Empty(STRTRAN(cGetCEL,'-','')) .OR. Empty(STRTRAN(STRTRAN(cGetCPF,'.',''),'-','')))
+    Alert('Preencha os campos obrigatórios!')
   else
-    MsgInfo('Cliente não encontrado', 'Atenção')
+    if DbSeek(XFILIAL('SZ1')+cGetCodigo)
+      RecLock('SZ1', .F.)
+        SZ1 -> Z1_NOME := cGetNome
+        SZ1 -> Z1_NOMERED := cGetNomeReduz
+        SZ1 -> Z1_DATNASC := dGetDatNasc
+        SZ1 -> Z1_DDDCEL :=  STRTRAN(STRTRAN(cGetDDDCel,'(',''),')','')
+        SZ1 -> Z1_CELULAR := STRTRAN(cGetCEL,'-','')
+        SZ1 -> Z1_SEXO := CValToChar(nSexo)  // 1 = Masculino / 2 = Feminino
+        SZ1 -> Z1_CPF := STRTRAN(STRTRAN(cGetCPF,'.',''),'-','')
+        SZ1 -> Z1_ENDEREC := cGetEndereco
+        SZ1 -> Z1_BAIRRO := cGetBairro
+        SZ1 -> Z1_TIPOIMO := cImovel
+        SZ1 -> Z1_CEP := STRTRAN(cGetCEP,'-','')
+        SZ1 -> Z1_ESTADO := cEstados
+        SZ1 -> Z1_CIDADE := cGetCidade
+        SZ1 -> Z1_ESTADOC := cEstCivil
+        SZ1 -> Z1_TEMPET := CValToChar(nPet)
+        SZ1 -> Z1_LADVPL := IIF(lCheckADVPL = .T.,"1","2") // 1 = sim, 2 = não
+        SZ1 -> Z1_LSQL := IIF(lCheckSQL,"1","2")
+        SZ1 -> Z1_LCSHARP := IIF(lCheckCSHARP,"1","2")
+        SZ1 -> Z1_PYTHON := IIF(lCheckPython,"1","2")
+        SZ1 -> Z1_OBS := cObservacao
+      MsUnlock()
+
+      MsgInfo('Cliente alterado com sucesso', 'Sucesso')
+    else
+      MsgInfo('Cliente não encontrado', 'Atenção')
+    endif
   endif
 
 return
