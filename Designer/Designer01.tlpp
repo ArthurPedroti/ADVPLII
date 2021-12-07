@@ -1,0 +1,50 @@
+#INCLUDE 'PROTHEUS.CH'
+#INCLUDE 'RWMAKE.CH'
+#INCLUDE 'FONT.CH'
+#INCLUDE 'COLORS.CH'
+
+User Function Designer01()
+
+/*ÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±± Declaração de cVariable dos componentes                                 ±±
+Ù±±ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ*/
+Private cGetCPF    := Space(14)
+Private cGetNome   := Space(30)
+Private lCheckADVPL := .T.
+Private lCheckPython := .F.
+Private lCheckSQL  := .F.
+Private cComboEstadoCivil := "Casado"
+Private nRadioSexo
+
+/*ÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±± Declaração de Variaveis Private dos Objetos                             ±±
+Ù±±ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ*/
+SetPrvt("oFont1","oDlg1","oSayNome","oSayCPF","oSayEstadoCivil","oSayCmo","oBmpIncluir","oGetNome","oGetCPF")
+SetPrvt("oComboEstadoCivil","oGroupLinguagens","oCheckADVPL","oCheckSQL","oCheckPython","oLBox1","oBtnMostrar")
+
+/*ÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±± Definicao do Dialog e todos os seus componentes.                        ±±
+Ù±±ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ*/
+oFont1     := TFont():New( "Segoe Fluent Icons",0,-16,,.F.,0,,400,.F.,.F.,,,,,, )
+oDlg1      := MSDialog():New( 092,228,449,870,"Disigner01",,,.F.,,,,,,.T.,,,.T. )
+oSayNome   := TSay():New( 012,016,{||"Nome"},oDlg1,,oFont1,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,032,008)
+oSayCPF    := TSay():New( 052,016,{||"CPF"},oDlg1,,oFont1,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,032,008)
+oSayEstado := TSay():New( 016,204,{||"Estado Civil"},oDlg1,,oFont1,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,032,008)
+oSayCmo    := TSay():New( 096,020,{||"Como vc esta?"},oDlg1,,,.F.,.F.,.F.,.T.,CLR_BLACK,CLR_WHITE,032,008)
+oBmpIncluir := TBitmap():New( 116,212,052,052,,"C:\TOTVS12133\Protheus\Protheus\my projects\ADVPLII\BMPS DE BOTÓES\incluirprotheuzeiro.bmp",.F.,oDlg1,,,.T.,.T.,,"",.T.,,.T.,,.F. )
+oGetNome   := TGet():New( 024,016,{|u| If(PCount()>0,cGetNome:=u,cGetNome)},oDlg1,052,010,'',,CLR_BLACK,CLR_WHITE,,,,.T.,"",,,.F.,.F.,,.F.,.F.,"","cGetNome",,)
+oGetCPF    := TGet():New( 064,016,{|u| If(PCount()>0,cGetCPF:=u,cGetCPF)},oDlg1,060,008,'@E 999.999.999-99',,CLR_BLACK,CLR_WHITE,,,,.T.,"",,,.F.,.F.,,.F.,.F.,"","cGetCPF",,)
+GoRadioSex := TGroup():New( 020,096,072,188,"Sexo",oDlg1,CLR_BLACK,CLR_WHITE,.T.,.F. )
+oRadioSexo := TRadMenu():New( 024,102,{"Masculino","Feminino"},{|u| If(PCount()>0,nRadioSexo:=u,nRadioSexo)},oDlg1,,,CLR_BLACK,CLR_WHITE,"",,,072,26,,.F.,.F.,.T. )
+oComboEstadoCivil := TComboBox():New( 028,208,{|u| If(PCount()>0,cComboEstadoCivil:=u,cComboEstadoCivil)},{"Casado","Solteiro","Opa"},072,010,oDlg1,,,,CLR_BLACK,CLR_WHITE,.T.,,"",,,,,,,cComboEstadoCivil )
+oGroupLinguagens := TGroup():New( 056,204,108,296,"Linguagens",oDlg1,CLR_BLACK,CLR_WHITE,.T.,.F. )
+oCheckADVPL := TCheckBox():New( 068,208,"ADVPL",{|u| If(PCount()>0,lCheckADVPL:=u,lCheckADVPL)},oDlg1,048,008,,,,,CLR_BLACK,CLR_WHITE,,.T.,"",, )
+oCheckSQL  := TCheckBox():New( 081,209,"SQL",{|u| If(PCount()>0,lCheckSQL:=u,lCheckSQL)},oDlg1,048,008,,,,,CLR_BLACK,CLR_WHITE,,.T.,"",, )
+oCheckPython := TCheckBox():New( 094,210,"Python",{|u| If(PCount()>0,lCheckPython:=u,lCheckPython)},oDlg1,048,008,,,,,CLR_BLACK,CLR_WHITE,,.T.,"",, )
+oLBox1     := TListBox():New( 104,020,,{"Alegre","Triste","Pensativo","Animado"},060,048,,oDlg1,,CLR_BLACK,CLR_WHITE,.T.,,,,"",,,,,,, )
+oBtnMostrar := TButton():New( 120,108,"Mostrar elementos",oDlg1,MsgInfo(cGetNome, "Arthur"),072,012,,,,.T.,,"",,,,.F. )
+
+oDlg1:Activate(,,,.T.)
+
+Return
+

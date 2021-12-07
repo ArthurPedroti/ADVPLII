@@ -1,0 +1,21 @@
+#include 'protheus.ch'
+#include 'totvs.ch'
+
+User Function zTCheckBox()
+  Local oDlg1
+  Local oCheck1, oCheck2
+  Local lCheck1 := .F.
+  Local lCheck2 := .F.
+
+  oDlg1 := TDialog():New(0,0,410,410,'Cadastro de Funcionarios',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  oCheck1 := TCheckBox():New(20,01,'CheckBox 001',{|| lCheck1},oDlg1,100,210,,{|| lCheck1 := !lCheck1, MsgInfo(lCheck1, "lCheck1")},,,,,,.T.,,,)
+  oCheck2 := TCheckBox():New(30,01,'CheckBox 002',,oDlg1,100,210,,,,,,,,.T.,,,)
+
+  oCheck2:bSetGet := {|| lCheck2}
+  oCheck2:bLClicked := {|| lCheck2 := !lCheck2, MsgInfo(lCheck2, "lCheck2")}
+
+  oButton1 := TButton():New(50,20,"Mostrar",oDlg1,{||MsgInfo(lCheck1, "Hoje vc está")}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+  oDlg1:Activate(,,,.T.)
+Return 

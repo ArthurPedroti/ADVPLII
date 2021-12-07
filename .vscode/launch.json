@@ -1,0 +1,119 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "totvs_language_debug",
+			"request": "launch",
+			"name": "TOTVS Language Debug",
+			"program": "${command:AskForProgramName}",
+			"cwb": "${workspaceFolder}",
+			"smartclientBin": "C:/TOTVS12133/Protheus/Protheus/bin/smartclient/smartclient.exe",
+			"isMultiSession": true,
+			"enableTableSync": true
+		}
+	],
+	"lastPrograms": [
+		{
+			"label": "sigamdi",
+			"description": "<nil>"
+		},
+		{
+			"label": "sigacfg",
+			"description": "<nil>"
+		},
+		{
+			"label": "SIGA",
+			"description": "<nil>"
+		},
+		{
+			"label": "zTSay",
+			"description": "<nil>"
+		},
+		{
+			"args": [],
+			"label": "zTSay",
+			"description": ""
+		},
+		{
+			"label": "u_zTSay",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTFont",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zMsAdvsize",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTGet",
+			"description": "<nil>"
+		},
+		{
+			"label": "u",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTGet2",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTGroup",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTPanel",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTFolder",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTRadmenu",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTComboBox",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTListBox",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_zTCheckBox",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_Projeto01",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_Designer01",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_TelaGaia",
+			"description": "<nil>"
+		},
+		{
+			"label": "apsdu",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_CriaSz1",
+			"description": "<nil>"
+		},
+		{
+			"label": "u_Projeto02",
+			"description": "<nil>"
+		},
+		{
+			"label": "Projeto",
+			"description": "<nil>"
+		}
+	],
+	"lastProgramExecuted": "sigamdi"
+}

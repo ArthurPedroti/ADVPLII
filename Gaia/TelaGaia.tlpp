@@ -1,0 +1,47 @@
+#Include "PROTHEUS.CH"
+//--------------------------------------------------------------
+/*/{Protheus.doc} MyFunction
+Description                                                     
+                                                                
+@param xParam Parameter Description                             
+@return xRet Return Description                                 
+@author  -                                               
+@since 03/12/2021                                                   
+/*/                                                             
+//--------------------------------------------------------------
+User Function TelaGaia()                        
+Local oComboEstado
+Local nComboEstado := 1
+Local oFolder1
+Local oGetEndereco
+Local cGetEndereco := "Define variable value"
+Local oGetNome
+Local cGetNome := "Define variable value"
+Local oGetNomeReduz
+Local cGetNomeReduz := "Define variable value"
+Local oGroup1
+Local oRadMenu1
+Local nRadMenu1 := 1
+Local oSay1
+Local oSay2
+Local oSay3
+Local oSayEstado
+Static oDlg
+
+  DEFINE MSDIALOG oDlg TITLE "New Dialog" FROM 000, 000  TO 500, 800 COLORS 0, 16777215 PIXEL
+
+    @ 085, 043 FOLDER oFolder1 SIZE 287, 121 OF oDlg ITEMS "Cadastrais","Endereço","Outros" COLORS 0, 16777215 PIXEL
+    @ 009, 005 SAY oSay1 PROMPT "Nome" SIZE 035, 012 OF oFolder1:aDialogs[1] COLORS 0, 16777215 PIXEL
+    @ 017, 005 MSGET oGetNome VAR cGetNome SIZE 039, 010 OF oFolder1:aDialogs[1] COLORS 0, 16777215 ON CHANGE {|u| IF(Pcount()>0,cGetNome:=u,cGetNome)} PIXEL
+    @ 009, 060 SAY oSay2 PROMPT "Nome Reduzido" SIZE 052, 007 OF oFolder1:aDialogs[1] COLORS 0, 16777215 PIXEL
+    @ 019, 060 MSGET oGetNomeReduz VAR cGetNomeReduz SIZE 036, 010 OF oFolder1:aDialogs[1] COLORS 0, 16777215 PIXEL
+    @ 022, 177 GROUP oGroup1 TO 085, 265 PROMPT "Estado" OF oFolder1:aDialogs[2] COLOR 0, 16777215 PIXEL
+    @ 017, 008 MSGET oGetEndereco VAR cGetEndereco SIZE 060, 010 OF oFolder1:aDialogs[2] COLORS 0, 16777215 PIXEL
+    @ 009, 008 SAY oSay3 PROMPT "Endereço" SIZE 025, 007 OF oFolder1:aDialogs[2] COLORS 0, 16777215 PIXEL
+    @ 016, 084 MSCOMBOBOX oComboEstado VAR nComboEstado ITEMS {"ES","SP","AC","MG","BA"} SIZE 072, 010 OF oFolder1:aDialogs[2] COLORS 0, 16777215 PIXEL
+    @ 008, 085 SAY oSayEstado PROMPT "Estado" SIZE 025, 007 OF oFolder1:aDialogs[2] COLORS 0, 16777215 PIXEL
+    @ 035, 182 RADIO oRadMenu1 VAR nRadMenu1 ITEMS "Solterio","Casada","Livre" SIZE 057, 046 OF oFolder1:aDialogs[2] COLOR 0, 16777215 PIXEL
+
+  ACTIVATE MSDIALOG oDlg CENTERED
+                   
+Return

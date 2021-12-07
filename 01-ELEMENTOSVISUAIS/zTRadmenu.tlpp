@@ -1,0 +1,18 @@
+#include 'protheus.ch'
+#include 'totvs.ch'
+
+User Function zTRadmenu()
+  Local oDlg1
+  Local aOpcoes := {"Feliz", "Animado", "Eufórico", "Pensativo"}
+  Local nOpcao := 3
+  Local oRadio
+  Local oButton1
+
+  oDlg1 := TDialog():New(0,0,410,410,'Cadastro de Funcionarios',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  oRadio := TRadMenu():New(10,10,aOpcoes,{|u| IF(Pcount()>0,nOpcao:=u,nOpcao)},oDlg1,,,,,,,,100,20,,,,.T.)
+
+  oButton1 := TButton():New(50,20,"Mostrar",oDlg1,{||MsgInfo(aOpcoes[nOpcao], "Hoje vc está")}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+  oDlg1:Activate(,,,.T.)
+Return 

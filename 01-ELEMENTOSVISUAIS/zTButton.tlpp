@@ -1,0 +1,21 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+User Function zTButton()
+  Local oDlg1 // Variavel que recebera a chamada da classe TDialog
+  Local cTituloJanela := 'Utilitários do Protheus'
+  Local oButton1 // variavel que recebera a classe do primeiro botao
+  Local oButton2 // variavel que recebera a classe do segundo botao
+  Local oButton3 // variavel que recebera a classe do terceiro botao
+  Local oButton4
+  Local oButton5
+
+  oDg1 := TDialog():New(0,0,500,500,cTituloJanela,,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+  oButton1 := TButton():New(20,20,"Clientes",oDlg1,{||Mata030()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de clientes
+  oButton2 := TButton():New(40,40,"Fornecedores",oDlg1,{||Mata020()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+  oButton3 := TButton():New(60,60,"Bancos",oDlg1,{||Mata070()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+  oButton4 := TButton():New(80,80,"Produtos",oDlg1,{||Mata010()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+  oButton5 := TButton():New(100,100,"FECHAR",oDlg1,{||oDg1:End()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+
+  oDg1:Activate(,,,.F.)
+Return 

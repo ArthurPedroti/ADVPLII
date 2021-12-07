@@ -1,0 +1,12 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+#include 'topconn.ch'
+
+
+User Function CriaSz1()
+
+DbSelectArea('SZ1')
+DbSetOrder(1)
+DbCloseArea()
+
+return 

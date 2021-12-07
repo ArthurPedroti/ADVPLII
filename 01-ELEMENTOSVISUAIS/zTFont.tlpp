@@ -1,0 +1,42 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+/*/{Protheus.doc} zTFont
+fonte para gerar fonte
+@type function
+@version  
+@author arthu
+@since 26/11/2021
+@return variant, return_description
+@see (links_or_references)
+/*/
+User Function zTFont()
+  Local oDlg1 // Variavel que recebera a chamada da classe TDialog
+  Local cTituloJanela := 'Utilitários do Protheus'
+  Local oButton1 // variavel que recebera a classe do primeiro botao
+  Local oButton2 // variavel que recebera a classe do segundo botao
+  Local oButton3 // variavel que recebera a classe do terceiro botao
+  Local oButton4
+  Local oButton5
+  Local oSay1, oSay2// variavel que armanazera o say
+  Local oFont1 // fonte para as says
+  Local oFont2 // fonte para os botoes
+
+  oDg1 := TDialog():New(0,0,500,500,cTituloJanela,,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+  
+  oFont1 := TFont():New('Comic Sans MS',,16,,.T.,,,,,.T.,.T.)
+  oFont2 := TFont():New('Arial Black',,12,,.F.,,,,,.F.,.F.)
+
+  oButton1 := TButton():New(20,20,"Clientes",oDlg1,{||Mata030()}, 40,10,,oFont2,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de clientes
+  oSay1 := TSay():New(25,70,{||'Clientes'},oDlg1,,oFont1,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  
+  oButton2 := TButton():New(40,40,"Fornecedores",oDlg1,{||Mata020()}, 40,10,,oFont2,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+  oSay2 := TSay():New(45,95,{||'Fornecedores'},oDlg1,,oFont1,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  
+  oButton3 := TButton():New(60,60,"Bancos",oDlg1,{||Mata070()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+  oButton4 := TButton():New(80,80,"Produtos",oDlg1,{||Mata010()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+  oButton5 := TButton():New(100,100,"FECHAR",oDlg1,{||oDg1:End()}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. ) // chama tela de fornecedores
+
+
+  oDg1:Activate(,,,.F.)
+Return 

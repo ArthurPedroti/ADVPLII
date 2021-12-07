@@ -1,0 +1,21 @@
+#include 'protheus.ch'
+#include 'totvs.ch'
+
+User Function zTListBox()
+  Local oDlg1
+  Local aOpcoes := {"Feliz", "Animado", "Eufórico", "Pensativo"}
+  Local nOpcao := 3
+  Local oList1
+  Local oButton1
+
+  oDlg1 := TDialog():New(0,0,410,410,'Cadastro de Funcionarios',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  oList1 := TListBox():New(001,001,{|u|if(Pcount()>0,nOpcao:=u,nOpcao)},aOpcoes,100,100,;
+                                 ,oDlg1,,,,.T.)
+
+  oList1:bChange := {||MsgInfo(aOpcoes[nOpcao], 'Escolha')}
+
+  oButton1 := TButton():New(50,20,"Mostrar",oDlg1,{||MsgInfo(aOpcoes[nOpcao], "Hoje vc está")}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+  oDlg1:Activate(,,,.T.)
+Return 

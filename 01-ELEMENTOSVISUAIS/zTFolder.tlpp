@@ -1,0 +1,37 @@
+#include 'protheus.ch'
+#include 'totvs.ch'
+
+User Function zTFolder()
+  Local oDlg1
+  Local oFolder
+  Local aFolder
+  Local cGet1 := Space(30)
+  Local cGet2 := Space(30)
+  Local cGet3 := Space(30)
+
+  
+  oDlg1 := TDialog():New(0,0,410,410,'Cadastro de Funcionarios',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  aFolder := {'Aba01', 'Aba02', 'Aba03'}
+  oFolder := TFolder():New(0,0,aFolder,aFolder,oDlg1,,,,.T.,,200,200)
+
+  // Aba 01
+
+  oSay1 := TSay():New(1,1,{||'Aba 01'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  oGet1 := TGet():New(10,1,{|u| IF(Pcount()>0,cGet1:=u,cGet1)},oFolder:aDialogs[1],096,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGet1,,,,)
+  oButton1 := TButton():New(25,10,"Executar",oFolder:aDialogs[1],{||MsgInfo(cGet1, 'Conteudo Digitado')}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+  // Aba 02
+
+  oSay2 := TSay():New(01,1,{||'Aba 02'},oFolder:aDialogs[2],,,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  oGet2 := TGet():New(10,1,{|u| IF(Pcount()>0,cGet2:=u,cGet2)},oFolder:aDialogs[2],096,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGet2,,,,)
+  oButton2 := TButton():New(25,10,"Executar",oFolder:aDialogs[2],{||MsgInfo(cGet2, 'Conteudo Digitado')}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+  
+  // Aba 03
+
+  oSay3 := TSay():New(1,1,{||'Aba 03'},oFolder:aDialogs[3],,,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  oGet3 := TGet():New(10,1,{|u| IF(Pcount()>0,cGet3:=u,cGet3)},oFolder:aDialogs[3],096,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGet3,,,,)
+  oButton3 := TButton():New(25,10,"Executar",oFolder:aDialogs[3],{||MsgInfo(cGet3, 'Conteudo Digitado')}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+  oDlg1:Activate(,,,.T.)
+Return 

@@ -1,0 +1,11 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+User Function zTDialog()
+  Local oDg11 // Variavel que recebera a chamada da classe TDialog
+
+  oDg11 := TDialog():New(0,0,550,700,'Cadastro de Funcionarios',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  oDg11:Activate(,,,.T.)
+return
+

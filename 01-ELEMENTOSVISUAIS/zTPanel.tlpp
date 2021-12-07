@@ -1,0 +1,41 @@
+#include 'protheus.ch'
+#include 'totvs.ch'
+
+/*/{Protheus.doc} User Function zTGroup
+  {
+  (long_description)
+  @type  Function
+  @author user
+  @since 26/11/2021
+  @version version
+  @param , param_type, param_descr
+  @return , return_type, return_description
+  @example
+  (examples)
+  @see (links_or_references)
+  /*/
+User Function zTPanel()
+  Local oDlg1
+  Local oPanel
+  Local oSay1
+  Local oGet1
+  Local cGet1 := Space(20)
+  
+  oDlg1 := TDialog():New(0,0,410,410,'Teste Tpanel',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  oPanel:= tPanel():New(10,10,"Teste",oDlg1,,.T.,,CLR_YELLOW,CLR_BLUE,100,100)
+
+  oSay1 := TSay():New(10,10,{||'Clientes'},oPanel,,,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  oGet1 := TGet():New(25,10,{|u| IF(Pcount()>0,cGet1:=u,cGet1)},oPanel,60,10,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGet1,,,,)
+
+  oDlg1:Activate(,,,.T.)
+Return 
+
+Static Function SendGets()
+  cGet3 := cGet1
+  cGet4 := cGet2
+  
+
+  oGet3:Refresh()
+  oGet4:Refresh()
+return

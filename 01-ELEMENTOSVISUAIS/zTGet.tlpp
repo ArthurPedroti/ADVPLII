@@ -1,0 +1,20 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+User Function zTGet1()
+  Local oDlg1
+  Local oSay1
+  Local oButton1
+  Local aSize := MsAdvsize()
+  Local cGet1 := Space(15)
+  Local oGet1
+  
+  oDlg1 := TDialog():New(aSize[7],aSize[1],aSize[6],aSize[5],'Protheus',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+  oSay1 := TSay():New(10,10,{||'Digite seu nome'},oDlg1,,,,,,.T.,CLR_BLACK,CLR_WHITE,300,20)
+  oGet1 := TGet():New(30,10,{|u| IF(Pcount()>0,cGet1:=u,cGet1)},oDlg1,096,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGet1,,,,)
+  
+  oButton1 := TButton():New(50,10,"Mostrar",oDlg1,{|| MsgInfo(cGet1, "Conteudo")}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+  
+  oDlg1:Activate(,,,.F.)
+Return 
