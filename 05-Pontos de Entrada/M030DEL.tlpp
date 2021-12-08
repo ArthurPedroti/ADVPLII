@@ -1,0 +1,15 @@
+#include 'protheus.ch'
+
+// Bloqueia a exclusão de clientes que sejam pessoa jurídica
+User Function M030DEL()
+
+  Local lRet := .T.
+  Local aArea := GetArea()
+
+  if SA1 -> A1_PESSOA = "J"
+    lRet := .F.
+    Alert('Não é possivel excluir o cliente, pois este é pessoa jurídica')
+  endif
+
+  Restarea(aArea)
+return (lRet)
