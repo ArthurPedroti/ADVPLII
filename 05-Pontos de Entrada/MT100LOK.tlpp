@@ -1,0 +1,15 @@
+#include 'protheus.ch'
+
+User Function MT100LOK()
+  Local lRet := .T.
+  Local nAcolsTES := AScan(aHeader, {|x| AllTrim(x[2]) == 'D1_TES'})
+  Local nAcolsQUANT := AScan(aHeader, {|x| AllTrim(x[2]) == 'D1_QUANT'})
+
+  Local cTES := aCols[n,nAcolsTES]
+  Local nQUANT := aCols[n,nAcolsQUANT]
+
+  if nQUANT >= 5 .AND. !(cTES $ SUPERGETMV('MV_YTESQTD')) // 003;004;010
+    lRet := .F.
+    Alert('Para quantidades iguais ou superiores a 5, deve-se usar as TES especificas')
+  endif
+return lRet
