@@ -1,0 +1,11 @@
+#include 'protheus.ch'
+
+User Function A010TOKVALID(cGrupo)
+  Local lReturn := .T.
+
+    if cGrupo $ '0005/0006/0007'
+      lReturn := .F.
+      MsgAlert('Inclusão não permitida, devido ao código do grupo')
+    endif
+
+return(lReturn)

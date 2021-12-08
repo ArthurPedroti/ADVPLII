@@ -1,0 +1,12 @@
+#include 'protheus.ch'
+
+// Impedir inclusão de produtos de determinados grupos
+User Function A010TOK()
+
+  Local lRet := .T.
+
+  if inclui // Variaveis de ponto de entrar: inclui, altera
+    lRet := u_A010TOKVALID(M->B1_GRUPO)
+  endif
+
+return (lRet)
