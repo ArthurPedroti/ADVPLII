@@ -1,0 +1,28 @@
+User Function M410LIOK()
+  Local lRet := .T.
+
+  Local nCount // variavel de controle do for
+  Local nContarIguais := 0
+
+  Local nAcolsQTDVen := AScan(aHeader, {|x| AllTrim(x[2]) == 'C6_QTDVEN'})
+  Local nQTDVEN := aCols[n,nAcolsQTDVen]
+
+  Local nAcolsCODProd := AScan(aHeader, {|x| AllTrim(x[2]) == 'C6_PRODUTO'})
+  Local cCodProduto := aCols[n,nAcolsCODProd]
+
+  for nCount := 1 to Len(aCols)
+    if aCols[nCount, nAcolsCODProd] = cCodProduto
+      nContarIguais++
+    endif
+  Next nCount
+
+  if nContarIguais > 1
+    lRet := .F.
+    Alert('Não é permitido o cadastro de produtos com o mesmo código.')
+  else
+    if nQTDVEN > 10
+      Alert('M410LIOK: Atenção, o arquivo de entrada possui mais de 10 itens.')
+      lRet := .F.
+    endif
+  endif
+return lRet
