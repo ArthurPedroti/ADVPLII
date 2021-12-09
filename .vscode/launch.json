@@ -113,6 +113,10 @@
 		{
 			"label": "Projeto",
 			"description": "<nil>"
+		},
+		{
+			"label": "sgiamdi",
+			"description": "<nil>"
 		}
 	],
 	"lastProgramExecuted": "sigamdi"
