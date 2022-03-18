@@ -26,9 +26,9 @@ User Function MVCSZ9()
   oBrowseSZ9:AddLegend("SZ9->Z9_STATUS == '2'", 'RED', 'Protheuzeiro Inativo')
 
 
-  oBrowseSZ9:SetOnlyFields({'Z9_CODIGO', 'Z9_NOME', 'Z9_SEXO', 'Z9_STATUS'})
+  // oBrowseSZ9:SetOnlyFields({'Z9_CODIGO', 'Z9_NOME', 'Z9_SEXO', 'Z9_STATUS'})
 
-  oBrowseSZ9:SetFilterDefault("Z9_STATUS == '1'")
+  // oBrowseSZ9:SetFilterDefault("Z9_STATUS == '1'")
 
   oBrowseSZ9:DisableDetails()
   
@@ -45,27 +45,16 @@ Return
 /*/
 Static Function MenuDef()
   Local aRotina := {}
+  Local aRotinaAut := FwMvcMenu('MVCSZ9') // recebe os menus automaticamente
 
-  ADD OPTION aRotina TITLE 'Visualizar' ACTION 'VIEWDEF.MVCSZ9' OPERATION 2 ACCESS 0
-  ADD OPTION aRotina TITLE 'Incluir' ACTION 'VIEWDEF.MVCSZ9' OPERATION 3 ACCESS 0
-  ADD OPTION aRotina TITLE 'Alterar' ACTION 'VIEWDEF.MVCSZ9' OPERATION 4 ACCESS 0
-  ADD OPTION aRotina TITLE 'Excluir' ACTION 'VIEWDEF.MVCSZ9' OPERATION 5 ACCESS 0
+  // Popular a variavel aRotina
+  ADD OPTION aRotina TITLE 'Legenda' ACTION 'u_SZ9LEG' OPERATION 6 ACCESS 0
+  ADD OPTION aRotina TITLE 'Sobre' ACTION 'u_SZ9SOBRE' OPERATION 6 ACCESS 0
 
-    //Adiciona o arrya do submenu a opção do menu
-	ADD OPTION aRotina TITLE 'SubMenu'    ACTION aSubMnu         OPERATION 9 ACCESS 0
-
-    // adiciona opções no submenu
-	ADD OPTION aSubMnu TITLE 'Sub Menu 01'    ACTION 'Alert("Sub menu 01")'  OPERATION 4 ACCESS 0
-	ADD OPTION aSubMnu TITLE 'Sub Menu 02'    ACTION 'Alert("Sub menu 02")'  OPERATION 4 ACCESS 0
-
-  // 1- PESQUISAR
-  // 2- VISUALIZAR
-  // 3- INCLUIR
-  // 4- ALTERAR
-  // 5- EXCLUIR
-  // 8- IMPRIMIR
-  // 9- COPIAR
-
+  // Adicionar dentro do array aRotina os os menus automaticos
+  For n := 1 To Len(aRotinaAut)
+    aAdd(aRotina, aRotinaAut[n])
+  Next n
 
 Return aRotina
 
@@ -109,7 +98,9 @@ Static Function ViewDef()
 
   Local oStructSZ9 := FWFormStruct(2, 'SZ9') // traz a estrutura da SZ9
 
-  oView := FWFormView():New() // contruindo a parte da visão dos dados
+  oStructSZ9:RemoveField('Z9_ESTCIV')
+
+  oView := FwFormView():New() // contruindo a parte da visão dos dados
 
   oView:SetModel(oModel) // passando o modelo de dados
 
@@ -121,5 +112,35 @@ Static Function ViewDef()
 
   oView:SetCloseOnOk({||.T.}) // força ou bloqueia o fechamento da janela
 
-  oView:SetOwnerView('VIEWSZ9', 'TELASZ9')
-Return 
+  oView:SetOwnerView('VIEWSZ9', 'TELASZ9') // relaciona a tela a view
+
+Return oView
+
+User Function SZ9LEG()
+Local aLegenda := {}
+
+aAdd(aLegenda, {'BR_VERDE'    , 'Ativo'})
+aAdd(aLegenda, {'BR_VERMELHO' , 'Inativo'})
+
+BrwLegenda('Protheuzeiros', 'Ativos/Inativos', aLegenda)
+
+Return aLegenda
+
+/*/{Protheus.doc} User Function SZ9SOBRE
+  (long_description)
+  @type  Function
+  @author user
+  @since 18/03/2022
+  @version version
+  @param param_name, param_type, param_descr
+  @return return_var, return_type, return_description
+  @example
+  (examples)
+  @see (links_or_references)
+  /*/
+User Function SZ9SOBRE()
+  Local cSobre
+
+  cSobre := '-<b>Minha priemira tela em MVP modelo 1'
+  MsgInfo(cSobre)
+Return
