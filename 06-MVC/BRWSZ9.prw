@@ -11,7 +11,7 @@
   @see https://centraldeatendimento.totvs.com/hc/pt-br/articles/360029127091-Cross-Segmento-TOTVS-Backoffice-Linha-Protheus-ADVPL-Op%C3%A7%C3%B5es-de-cores-na-legenda-da-Classe-FWMBROWSE
   /*/
 User Function BRWSZ9()
-  Local aArea := GetNextAlias()
+  Local aArea := GetArea()
   Local oBrowseSZ9 // Variavel objeto que recebera o instaciamento da classe FwmBrose
 
   oBrowseSZ9 := FwmBrowse():New()// Variavel objeto que recebera o instaciamento da classe FwmBrose
