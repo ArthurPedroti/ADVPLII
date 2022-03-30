@@ -21,7 +21,7 @@ User Function MVCSZ1()
   oBrowseSZ1 := FwmBrowse():New()
 
   oBrowseSZ1:SetAlias('SZ1')
-  oBrowseSZ1:SetDescription('Tela de SubFamilias x Compradores')
+  oBrowseSZ1:SetDescription('Tela de SubFamilias x Responsável')
 
   oBrowseSZ1:SetOnlyFields({'Z1_FAM', 'Z1_DESC', 'Z1_RESP'})
 
@@ -68,9 +68,9 @@ Static Function ModelDef()
 
   oModel:SetPrimaryKey({'Z1_FAM'}) // define a chabe primaria para a aplicação
 
-  oModel:SetDescription('Modelo de dados da tabela de compradores por familia')
+  oModel:SetDescription('Modelo de dados da tabela de responsáveis por familia')
 
-  oModel:GetModel('FORMSZ1'):SetDescription('Formulário da tabela de compradores por familia')
+  oModel:GetModel('FORMSZ1'):SetDescription('Formulário da tabela de responsáveis por familia')
 
 Return oModel
 
@@ -97,7 +97,7 @@ Static Function ViewDef()
 
   oView:CreateHorizontalBox('TELASZ1',100) // cria o container com o intedtificador TELA
 
-  oView:EnableTitleView('VIEWSZ1', 'Visualização dos protheuzeiros') // adiciona titulo ao formulario
+  oView:EnableTitleView('VIEWSZ1', 'Visualização dos responsaveis') // adiciona titulo ao formulario
 
   oView:SetCloseOnOk({||.T.}) // força ou bloqueia o fechamento da janela
 
