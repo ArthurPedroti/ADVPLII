@@ -35,7 +35,7 @@ Return aRotina
 
 /*/{Protheus.doc} ModelDefinition MVCSZ75
   ModelDef SZ7
-  @type Static Function
+  @type Function
   @author arthurpedroti
   @since 18/03/2022
   @see https://tdn.totvs.com/display/framework/FWFormModelStruct
@@ -51,11 +51,13 @@ Static Function ModelDef()
   // Objeto responsavel pela estrutura dos itens
   Local oStItens := FwFormStruct(1, 'SZ7')
 
+  Local bVldPos := {|| u_VldSZ7()} // Valição para inclusão antes da inserção no bd
+
   Local bVldCom := {|| u_GrvSZ7()} // chama da user function que validara a INCLUSAO/ALTERACAO/EXCLUSAO dos itens
 
   // Objeto principal do dev em MVC Model2, eletras as caracteristicas
   // do dicionario de dados, estrutura de tabelas, campos e registros
-  Local oModel := MPFormModel():New('MVCSZ7m',/*bPre*/, /*bPos*/, bVldCom /*bCommit*/,/*bCancel*/)
+  Local oModel := MPFormModel():New('MVCSZ7m',/*bPre*/, bVldPos, bVldCom /*bCommit*/,/*bCancel*/)
 
   // CriaÃ§Ã£o da tabela temporÃ¡ria que serÃ¡ utilizada no cabeÃ§alho
   oStCabec:AddTable('SZ7', {'Z7_FILIAL', 'Z7_NUM', 'Z7_ITEM'}, 'CabeÃ§alho SZ7')
@@ -510,6 +512,42 @@ User Function GrvSZ7()
           Endif
       Next nLinAtu
     */	
+  ENDIF
+
+  RestArea(aArea)
+Return lRet
+
+/*/{Protheus.doc} User Function VldSZ7(cFilSZ7, cNum, dEmissao, cFornece, cLoja, cUser, cOption, aCols, aHeader, aArea)
+  VldSZ7
+  @type  Function
+  @author arthurpedroti
+  @since 18/03/2022
+  @version 1
+  /*/
+User Function VldSZ7()
+  Local lRet := .T.
+  Local aArea := GetArea()
+
+  // Instanciar os models para capturar os dados do cabeçalho
+  Local oModel := FwModelActive()
+
+  Local oModelCabec := oModel:GetModel("SZ7MASTER")
+
+  Local cFilSZ7 := oModelCabec:GetValue("Z7_FILIAL")
+  Local cNum := oModelCabec:GetValue("Z7_NUM")
+
+  Local cOption := oModelCabec:GetOperation()
+
+  IF cOption == MODEL_OPERATION_INSERT
+    DbSelectArea("SZ7")
+    SZ7->(DbSetOrder(1)) // filial+num
+      // Se ele encontrar o numero do pedido na tabela, a variavel lRet retornara false,
+      // e impedira a inserção na tabela
+      IF SZ7->(DbSeek(cFilSZ7+cNum))
+        lRet := .F.
+        // Use o HELP, pois usando o alert e msginfo, ele aparece um mensagem de erro
+        Help(Nil, Nil, "Escolha outro numero de pedido", Nil, "O numero do pedido informado ja existe na base de dados.", 1, 0, Nil, Nil, Nil, Nil, Nil, {"ATENÇÃO"})
+      ENDIF
   ENDIF
 
   RestArea(aArea)
