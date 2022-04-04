@@ -90,7 +90,7 @@ Static Function ModelDef()
     Nil,;                                                                                       // [08]  B   Code-block de validaÃ§Ã£o When do campo
     {},;                                                                                        // [09]  A   Lista de valores permitido do campo
     .F.,;                                                                                       // [10]  L   Indica se o campo tem preenchimento obrigatÃ³rio
-    FwBuildFeature( STRUCT_FEATURE_INIPAD, "Iif(!INCLUI,SZ7->Z7_NUM,'')" ),;                    // [11]  B   Code-block de inicializacao do campo
+    FwBuildFeature( STRUCT_FEATURE_INIPAD, 'Iif(!INCLUI,SZ7->Z7_NUM,GetSXENum("SZ7","Z7_NUM"))' ),;                    // [11]  B   Code-block de inicializacao do campo
     .T.,;                                                                                       // [12]  L   Indica se trata-se de um campo chave
     .F.,;                                                                                       // [13]  L   Indica se o campo pode receber valor em uma operaÃ§Ã£o de update.
     .F.)  
@@ -230,7 +230,7 @@ Static Function ViewDef()
     X3Picture("Z7_NUM"),;       // [07]  C   Picture
     Nil,;                       // [08]  B   Bloco de PictTre Var
     Nil,;                       // [09]  C   Consulta F3
-    Iif(INCLUI, .T., .F.),;    	// [10]  L   Indica se o campo é alteravel
+    .F.,;    	// [10]  L   Indica se o campo é alteravel
     Nil,;                       // [11]  C   Pasta do campo
     Nil,;                       // [12]  C   Agrupamento do campo
     Nil,;                       // [13]  A   Lista de valores permitido do campo (Combo)
@@ -335,6 +335,9 @@ Static Function ViewDef()
   // Monto a estrutura de visualização do master e do detail (cabeçalho e itens)
   oView:AddField("VIEW_SZ7M",oStCabec,"SZ7MASTER") // Cabeçalho
   oView:AddGrid("VIEW_SZ7D",oStItens,"SZ7DETAIL") // Itens
+
+  // Deixando o campo item da solicitação incremental
+  oView:AddIncrementField("SZ7DETAIL", "Z7_ITEM") // soma 1 ao compa de item
 
   // Criamos a telinha, dividindo proporcionalmente o tamanho do cabeçalho e da grid
   oView:CreateHorizontalBox("CABEC",30)
