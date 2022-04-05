@@ -312,7 +312,7 @@ Static Function ViewDef()
     X3Picture("Z7_FORNECE"),;       // [07]  C   Picture
     Nil,;                           // [08]  B   Bloco de PictTre Var
     "SA2",;                         // [09]  C   Consulta F3
-    Iif(INCLUI, .T., .F.),;         // [10]  L   Indica se o campo é alteravel
+    .T.,;                           // [10]  L   Indica se o campo é alteravel
     Nil,;                           // [11]  C   Pasta do campo
     Nil,;                           // [12]  C   Agrupamento do campo
     Nil,;                           // [13]  A   Lista de valores permitido do campo (Combo)
@@ -542,18 +542,18 @@ User Function GrvSZ7()
       ENDIF
     Next n // incremento da linha For
   ELSEIF cOption == MODEL_OPERATION_DELETE
-    SZ7->(DbSetOrder(1)) // indice filial+num
-    /* Ele vai percorrer toda a tabela, e enquanto a filial for igual a do pedido e
-    o numero do pedido for igual ao numero que está posicionando para excluir
-    ele fará a exclusão do itens */
-    WHILE !SZ7->(EOF()) .AND. SZ7->Z7_FILIAL = cFilSZ7 .AND. SZ7->Z7_NUM = cNum 
-      RecLock("SZ7", .F.)
-        DbDelete()
-      SZ7->(MSUNLOCK())
-    SZ7->(dbSkip())
-    ENDDO
+    // SZ7->(DbSetOrder(1)) // indice filial+num
+    // /* Ele vai percorrer toda a tabela, e enquanto a filial for igual a do pedido e
+    // o numero do pedido for igual ao numero que está posicionando para excluir
+    // ele fará a exclusão do itens */
+    // WHILE !SZ7->(EOF()) .AND. SZ7->Z7_FILIAL = cFilSZ7 .AND. SZ7->Z7_NUM = cNum 
+    //   RecLock("SZ7", .F.)
+    //     DbDelete()
+    //   SZ7->(MSUNLOCK())
+    // SZ7->(dbSkip())
+    // ENDDO
 
-    /* OUTRA FORMA DE EXCLUSÃO COM BASE NO QUE ESTÁ NO GRID.
+    /* OUTRA FORMA DE EXCLUSÃO COM BASE NO QUE ESTÁ NO GRID. */
       SZ7->(dbSetOrder(2))
       For nLinAtu := 1 to Len(aColsAux)
           //Regrinha para verificar se a linha estÃ¡ excluÃ­da, se nÃ£o tiver irÃ¡ incluir
@@ -563,7 +563,6 @@ User Function GrvSZ7()
               SZ7->(MsUnlock())
           Endif
       Next nLinAtu
-    */	
   ENDIF
 
   RestArea(aArea)
