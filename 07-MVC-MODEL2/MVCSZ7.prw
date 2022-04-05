@@ -59,6 +59,11 @@ Static Function ModelDef()
   // do dicionario de dados, estrutura de tabelas, campos e registros
   Local oModel := MPFormModel():New('MVCSZ7m',/*bPre*/, bVldPos, bVldCom /*bCommit*/,/*bCancel*/)
 
+  // Variaveis que armazenarão a estrutura da trigger dos campos quantidade e preço,
+  // que gerara o conteudo do campo TOTAL automaticamente
+  Local aTrigQuant := {}
+  Local aTrigPreco := {}
+
   // CriaÃ§Ã£o da tabela temporÃ¡ria que serÃ¡ utilizada no cabeÃ§alho
   oStCabec:AddTable('SZ7', {'Z7_FILIAL', 'Z7_NUM', 'Z7_ITEM'}, 'CabeÃ§alho SZ7')
 
@@ -90,7 +95,7 @@ Static Function ModelDef()
     Nil,;                                                                                       // [08]  B   Code-block de validaÃ§Ã£o When do campo
     {},;                                                                                        // [09]  A   Lista de valores permitido do campo
     .F.,;                                                                                       // [10]  L   Indica se o campo tem preenchimento obrigatÃ³rio
-    FwBuildFeature( STRUCT_FEATURE_INIPAD, 'Iif(!INCLUI,SZ7->Z7_NUM,GetSXENum("SZ7","Z7_NUM"))' ),;                    // [11]  B   Code-block de inicializacao do campo
+    FwBuildFeature( STRUCT_FEATURE_INIPAD, 'Iif(!INCLUI,SZ7->Z7_NUM,NEXTNUMERO("SZ7",1,"Z7_NUM",.T.))' ),;                    // [11]  B   Code-block de inicializacao do campo
     .T.,;                                                                                       // [12]  L   Indica se trata-se de um campo chave
     .F.,;                                                                                       // [13]  L   Indica se o campo pode receber valor em uma operaÃ§Ã£o de update.
     .F.)  
@@ -166,12 +171,46 @@ oStCabec:AddField(;
   oStItens:SetProperty("Z7_FORNECE", MODEL_FIELD_INIT, FwBuildFeature(STRUCT_FEATURE_INIPAD, '"*"'))
   oStItens:SetProperty("Z7_LOJA", MODEL_FIELD_INIT, FwBuildFeature(STRUCT_FEATURE_INIPAD, '"*"'))
 
+  // Chamar a função para o bloco de codigo da trigger
+  aTrigQuant := FwStruTrigger(;
+  "Z7_QUANT",; // campo que ira disparar o gatilho/trigger
+  "Z7_TOTAL",; // campo que ira receber o conteudo disparado
+  "M->Z7_QUANT * M->Z7_PRECO",; // conteudo que irá para o campo Z7_TOTAL
+  .F.)
+
+  aTrigPreco := FwStruTrigger(;
+  "Z7_PRECO",; // campo que ira disparar o gatilho/trigger
+  "Z7_TOTAL",; // campo que ira receber o conteudo disparado
+  "M->Z7_QUANT * M->Z7_PRECO",; // conteudo que irá para o campo Z7_TOTAL
+  .F.)
+
+  // Adiciono a trigger a minha estrutura de itens
+  oStItens:AddTrigger(;
+    aTrigQuant[1],;
+    aTrigQuant[2],;
+    aTrigQuant[3],;
+    aTrigQuant[4];
+  )
+
+  oStItens:AddTrigger(;
+    aTrigPreco[1],;
+    aTrigPreco[2],;
+    aTrigPreco[3],;
+    aTrigPreco[4];
+  )
+
   /*A partir de agora, eu faço a união das estruturas, vinculando o cabeçalho com os itens
   também faço a vinculação da Estrutura de dados dos itens, ao modelo
   */
 
   oModel:AddFields("SZ7MASTER",,oStCabec) // Faço a vinculação com o oStCabec(cabeçalhjo de iten temporarios)
   oModel:AddGrid("SZ7DETAIL","SZ7MASTER",oStItens,,,,,) // Faço a vinculação com o oStItens(itens temporarios)
+
+  /*ADICIONANDO MODEL DE TOTALIZADORES Á APLICAÇÃO*/
+           /*       IDMODELO       MASTER         DETALHE       CAMPOCALCULADO   NOMEPERSONALIZADO DO CAMPO      OPERACAO   NOMETOTALIZADOR   */
+  oModel:AddCalc("SZ7TOTAIS",     "SZ7MASTER",   "SZ7DETAIL",  "Z7_PRODUTO",    "QTDITENS",                    "COUNT",,, "Número de Produtos")
+  oModel:AddCalc("SZ7TOTAIS",     "SZ7MASTER",   "SZ7DETAIL",  "Z7_QUANT",      "QTDTOTAL",                    "SUM"  ,,, "Total de Itens")
+  oModel:AddCalc("SZ7TOTAIS",     "SZ7MASTER",   "SZ7DETAIL",  "Z7_TOTAL",      "PRCTOTAL",                    "SUM"  ,,, "Preço total da Solicitação de Compras")
 
   // Seta uma relação entre o cabeçalho e itens, neste ponto, eu digo atráves de qual/quais campos o grid está vinculado com o cabeçalho
   aRelations := {}
@@ -219,6 +258,9 @@ Static Function ViewDef()
   caso eu não queira que algum campo, apareça na minha grid, eu devo remover este campo com RemoveField
   */
   Local oStItens      := FwFormStruct(2,"SZ7") //1 para model 2 para view
+
+  // criar estrutura para totalizadores
+  Local oStTotais := FwCalcStruct(oModel:GetModel('SZ7TOTAIS'))
 
   oStCabec:AddField(;
     "Z7_NUM",;                  // [01]  C   Nome do Campo
@@ -326,6 +368,9 @@ Static Function ViewDef()
   oStItens:RemoveField("Z7_LOJA")      
   oStItens:RemoveField("Z7_USER") 
 
+  oStItens:SetProperty("Z7_ITEM", MVC_VIEW_CANCHANGE, .F.)
+  oStItens:SetProperty("Z7_TOTAL", MVC_VIEW_CANCHANGE, .F.)
+
   // Instanciar a classe FwFormView para o objeto view
   oView := FwFormView():New()
 
@@ -335,21 +380,25 @@ Static Function ViewDef()
   // Monto a estrutura de visualização do master e do detail (cabeçalho e itens)
   oView:AddField("VIEW_SZ7M",oStCabec,"SZ7MASTER") // Cabeçalho
   oView:AddGrid("VIEW_SZ7D",oStItens,"SZ7DETAIL") // Itens
+  oView:AddField("VIEW_TOTAL",oStTotais,"SZ7TOTAIS") // Totais
 
   // Deixando o campo item da solicitação incremental
   oView:AddIncrementField("SZ7DETAIL", "Z7_ITEM") // soma 1 ao compa de item
 
   // Criamos a telinha, dividindo proporcionalmente o tamanho do cabeçalho e da grid
-  oView:CreateHorizontalBox("CABEC",30)
-  oView:CreateHorizontalBox("GRID",70)
+  oView:CreateHorizontalBox("CABEC",20)
+  oView:CreateHorizontalBox("GRID",50)
+  oView:CreateHorizontalBox("TOTAL",30)
 
   // Associar cada view para cada box criado
   oView:SetOwnerView("VIEW_SZ7M", "CABEC")
   oView:SetOwnerView("VIEW_SZ7D", "GRID")
+  oView:SetOwnerView("VIEW_TOTAL", "TOTAL")
 
   //Ativar os títulos de cada VIEW/Box criado
-  oView:EnableTitleView("VIEW_SZ7M","Cabeçalho Solicição de Compras")
-  oView:EnableTitleView("VIEW_SZ7D","Itens de Solicição de Compras")
+  oView:EnableTitleView("VIEW_SZ7M","Cabeçalho Solicitação de Compras")
+  oView:EnableTitleView("VIEW_SZ7D","Itens de Solicitação de Compras")
+  oView:EnableTitleView("VIEW_TOTAL","Totais de Solicitação de Compras")
 
   /*Metodo que seta um bloco de código para verificar se a janela deve ou não
   ser fechada após a execução do botão OK.
