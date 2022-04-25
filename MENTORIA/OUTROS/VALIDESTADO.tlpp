@@ -1,0 +1,20 @@
+#include "Protheus.ch"
+#include "Totvs.ch"
+
+
+User Function VALIDESTADO()
+/*
+PROIBIR A INSERÇÃO DE CLIENTES CUJO ESTADO SEJA BA/MG/RJ
+*/
+Local lRet  := .T.
+
+
+IF M->A1_EST $ ("BA/MG/RJ") .AND. M->A1_NOME <> "THIAGO"
+        lRet := .F.
+        MsgAlert("Estado proibido, por favor selecione outro","Estado não permitido")
+ENDIF    
+
+
+
+
+return lRet

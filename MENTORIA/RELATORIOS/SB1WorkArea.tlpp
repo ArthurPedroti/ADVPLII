@@ -1,0 +1,82 @@
+#INCLUDE "TOPCONN.CH"
+#INCLUDE "PROTHEUS.CH"                                                      
+
+
+/*/{Protheus.doc} SB1WorkArea
+Fonte utilizado para extrair dados dos produtos da tabelas SB1
+@type function
+@version  
+@author Sistematizei / Júnior Plácido
+@since 20/06/2021
+@return return_type, return_description
+/*/
+User Function SB1WorkArea()
+Local aCabec := {} //ARRAY DO CABEÇALHO
+Local aDados := {} //ARRAY QUE ARMAZENARÁ OS DADOS
+Local cPerg 	 := "TRPROD" //VARIÁVEL QUE ARMAZENA O NOME DO GRUPO DE PERGUNTAS
+Local cStatus	//Se está bloqueado ou não
+Local aArea		:= GetArea()
+
+ValidPerg(cPerg)
+//Função responsável por chamar a pergunta criada na função ValidaPerg, a variável PRIVATE cPerg, é passada.
+Pergunte(cPerg,.T.)
+
+//Seleciono a área da tabela SB1, isso quer dizer que vou fazer uma varredura em todos os registros
+DbselectArea("SB1")
+SB1->(DbSetOrder(1))
+SB1->(DbGoTop())
+
+//CABEÇALHO
+aCabec := {"FILIAL","CODIGO","DESCRICAO","TIPO","UNIDADEDEMEDIDA","STATUS"}
+
+//Enquanto não chegar ao final do Arquivo, ele vai ler todos os registros
+While SB1->(!Eof()) 
+
+//Se o registro estiver dentr do filtro feito nas perguntas, ele armazenará dentro do array
+	IF SB1->B1_COD >= MV_PAR01 .AND. SB1->B1_COD <= MV_PAR02
+		IIF(SB1->B1_MSBLQL == "1",cStatus := "Bloqueado",cStatus:="Desbloqueado")
+		aAdd(aDados,{B1_FILIAL, B1_COD, B1_DESC, B1_TIPO, B1_UM,cStatus})			
+	ENDIF
+SB1->(dbSkip()) //PASSAR PARA O PRÓXIMO REGISTRO
+enddo
+
+//JOGO TODO CONTEÚDO DO ARRAY PARA O EXCEL
+DlgtoExcel({{"ARRAY","Relatório de Produtos", aCabec, aDados}})
+	                                          
+SB1->(dbClosearea())	
+
+RestArea(aArea)
+return
+
+
+
+/*/{Protheus.doc} ValidPerg
+FUNÇÃO RESPONSÁVEL POR CRIAR AS PERGUNTAS NA SX1 
+@type function
+@author PLACIDO / SISTEMATIZEI
+@since 24/06/2019
+@version 1.0
+@see Com a tecla Ctrl PRESSIONADA clique --> https://www.youtube.com/watch?v=vSiJxbiSt8E
+/*/Static Function ValidPerg(cPerg)
+	Local aArea  := SX1->(GetArea())
+	Local aRegs := {}
+	Local i,j
+
+	aadd( aRegs, { cPerg,"01","Produto de ?","Produto de ?","Produto de ?","mv_ch1","C", 15,0,0,"G","","mv_par01","","","mv_par01"," ","",""," ","","","","","","","","","","","","","","","","","","SB1"          } )
+	aadd( aRegs, { cPerg,"02","Produto ate ?","Produto ate ?","Produto ate ?","mv_ch2","C", 15,0,0,"G","","mv_par02","","","mv_par02"," ","",""," ","","","","","","","","","","","","","","","","","","SB1"       } )
+
+	DbselectArea('SX1')
+	SX1->(DBSETORDER(1))
+	For i:= 1 To Len(aRegs)
+		If ! SX1->(DBSEEK( AvKey(cPerg,"X1_GRUPO") +aRegs[i,2]) )
+			Reclock('SX1', .T.) //FUnção utilizada para gravar dados em um arquivo/tabela
+			FOR j:= 1 to SX1->( FCOUNT() )
+				IF j <= Len(aRegs[i])
+					FieldPut(j,aRegs[i,j])
+				ENDIF
+			Next j
+			SX1->(MsUnlock())
+		Endif
+	Next i 
+	RestArea(aArea) 
+Return(cPerg)

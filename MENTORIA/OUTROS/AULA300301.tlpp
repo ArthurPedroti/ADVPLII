@@ -1,0 +1,25 @@
+#include "Totvs.ch"
+#include "Protheus.ch"
+
+
+User Function AULA300301()
+/*
+VAMOS VERIFICAR SE UMA PESSOA É DE NATURALIDADE ESTRANGEIRA OU NÃO
+*/
+
+Local lEstrangeira  := .T.
+
+
+
+IIF(lEstrangeira,MsgInfo("É Estrangeira"),MsgInfo("Não é estrangeira"))
+
+/*
+IF lEstrangeira = .T.
+    MsgInfo("Estrangeira","Natualidade")
+ELSE    
+    MsgInfo("Brasileira","Naturalidade")
+ENDIF
+*/
+
+
+return

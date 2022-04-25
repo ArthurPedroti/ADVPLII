@@ -1,0 +1,26 @@
+#include "Totvs.ch"
+#include "Protheus.ch"
+
+
+User Function AULA30032022()
+/*
+Acontecerá uma viagem, e para que o embarque seja feito com sucesso
+pelo menos 1 dos docuementos abaixo, deverá ser apresentado
+CPF
+RG
+CNH
+*/
+
+Local lCPF  := .F.
+Local lRG   := .F.
+Local lCNH  := .F.
+
+//IF lCPF .OR. lRG .OR. lCNH
+IF lCPF = .T. .OR. lRG = .T.  .OR. lCNH = .T.
+    MsgInfo("Documentação apresentada!","Embarque AUTORIZADO")
+ELSE    
+    Alert("EMBARQUE NÃO AUTORIZADO!")
+ENDIF
+
+
+return

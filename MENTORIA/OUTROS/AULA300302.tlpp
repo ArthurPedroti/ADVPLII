@@ -1,0 +1,20 @@
+#include "Totvs.ch"
+#include "Protheus.ch"
+
+
+User Function AULA300302()
+/*
+VAMOS VERIFICAR SE UMA PESSOA É DE NATURALIDADE BRASILEIRA OU NÃO
+*/
+
+Local lBrasileira  := .F.
+
+
+IF !lBrasileira //NÃO ALTERA O VALOR DA VARIÁVEL
+// IF lBrasileira = .F.
+    MsgInfo("Estrangeira","Natualidade")
+ELSE    
+    MsgInfo("Brasileira","Naturalidade")
+ENDIF
+
+return

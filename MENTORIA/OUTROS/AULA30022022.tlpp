@@ -1,0 +1,22 @@
+#include "Protheus.ch"
+#include "Totvs.ch"
+
+User Function AULA30022022()
+//Variáveis lógicas
+Local lGasolina
+Local lClimaTempo
+
+
+lGasolina   := .F.  //
+lClimaTempo := .F.  //
+
+//SE HOJE ESTIVER UM DIA ENSOLARADO E O CARRO ESTIVER ABASTECIDO IREI À PRAIA
+
+IF !(lGasolina = .T. .OR. lClimaTempo = .T.)
+    MsgInfo("Não deu praia","Missão abortada")
+else
+    MsgInfo("Dia Ensolarado OK / Tanque Cheio OK", "#Partiu Praia")
+ENDIF
+
+
+return
